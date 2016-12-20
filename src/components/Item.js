@@ -14,7 +14,6 @@ const Item = React.createClass({
 		let department = ReactDOM.findDOMNode(this.refs.d).value;
 		let status = ReactDOM.findDOMNode(this.refs.s).value;
 		if(name !== "" && department !== "" && status !== "") {
-			console.log('name:' + name + '  dep:' + department + '   status' + status);
 			this.props.changeStudent(id, name, department, status);
 		}
 	},

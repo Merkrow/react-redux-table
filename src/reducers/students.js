@@ -1,47 +1,5 @@
-let counter = 0;
-const student = ( state, action ) => {
-	switch (action.type) {
-		case 'ADD_STUDENT':
-			counter++;
-			return {
-				id: counter,
-				name: action.payload.name,
-				department: action.payload.department,
-				status: action.payload.status,
-				change: false
-			}
-		case 'TOGGLE_CHANGE':
-			if(state.id !== action.id) {
-				return state;
-			}
-			return {
-				id: state.id,
-				name: state.name,
-				department: state.department,
-				status: state.status,
-				change: !state.change
-			}
-		case 'CHANGE':
-			if(state.id !== action.payload.id) {
-				return state;
-			}
-			return {
-				id: action.payload.id,
-				name: action.payload.name,
-				department: action.payload.department,
-				status: action.payload.status,
-				change: !state.change
-			}
-		case 'DELETE':
-			if(state.id !== action.id) {
-				return true;
-			}
-			counter--;
-			return false;
-		default:
-			return state;
-	}
-}
+import student from './student';
+
 
 export const students = ( state, action ) => {
 	switch (action.type) { 
@@ -58,10 +16,7 @@ export const students = ( state, action ) => {
 			return state.filter(t => student(t, action)).map(t => {
 				if(t.id > action.id) {
 					return {
-						name: t.name,
-						department: t.department,
-						status: t.status,
-						change: t.change,
+						...t,
 						id: t.id-1
 					}
 				}

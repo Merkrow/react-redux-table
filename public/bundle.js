@@ -22605,7 +22605,7 @@ function run() {
 
 run();
 
-},{"./containers/App":220,"./reducers/addingStudent":221,"./reducers/students":222,"react":204,"react-dom":38,"react-redux":174,"redux":210}],217:[function(require,module,exports){
+},{"./containers/App":220,"./reducers/addingStudent":221,"./reducers/students":223,"react":204,"react-dom":38,"react-redux":174,"redux":210}],217:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22708,7 +22708,6 @@ var Item = _react2.default.createClass({
 		var department = _reactDom2.default.findDOMNode(this.refs.d).value;
 		var status = _reactDom2.default.findDOMNode(this.refs.s).value;
 		if (name !== "" && department !== "" && status !== "") {
-			console.log('name:' + name + '  dep:' + department + '   status' + status);
 			this.props.changeStudent(id, name, department, status);
 		}
 	},
@@ -22957,42 +22956,32 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var counter = 0;
 var student = function student(state, action) {
 	switch (action.type) {
 		case 'ADD_STUDENT':
 			counter++;
-			return {
-				id: counter,
-				name: action.payload.name,
-				department: action.payload.department,
-				status: action.payload.status,
+			return _extends({
+				id: counter
+			}, action.payload, {
 				change: false
-			};
+			});
 		case 'TOGGLE_CHANGE':
 			if (state.id !== action.id) {
 				return state;
 			}
-			return {
-				id: state.id,
-				name: state.name,
-				department: state.department,
-				status: state.status,
+			return _extends({}, state, {
 				change: !state.change
-			};
+			});
 		case 'CHANGE':
 			if (state.id !== action.payload.id) {
 				return state;
 			}
-			return {
-				id: action.payload.id,
-				name: action.payload.name,
-				department: action.payload.department,
-				status: action.payload.status,
+			return _extends({}, action.payload, {
 				change: !state.change
-			};
+			});
 		case 'DELETE':
 			if (state.id !== action.id) {
 				return true;
@@ -23004,30 +22993,46 @@ var student = function student(state, action) {
 	}
 };
 
+exports.default = student;
+
+},{}],223:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.students = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _student = require('./student');
+
+var _student2 = _interopRequireDefault(_student);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var students = exports.students = function students(state, action) {
 	switch (action.type) {
 		case 'ADD_STUDENT':
-			return [].concat(_toConsumableArray(state), [student(undefined, action)]);
+			return [].concat(_toConsumableArray(state), [(0, _student2.default)(undefined, action)]);
 		case 'TOGGLE_CHANGE':
 			return state.map(function (t) {
-				return student(t, action);
+				return (0, _student2.default)(t, action);
 			});
 		case 'CHANGE':
 			return state.map(function (t) {
-				return student(t, action);
+				return (0, _student2.default)(t, action);
 			});
 		case 'DELETE':
 			return state.filter(function (t) {
-				return student(t, action);
+				return (0, _student2.default)(t, action);
 			}).map(function (t) {
 				if (t.id > action.id) {
-					return {
-						name: t.name,
-						department: t.department,
-						status: t.status,
-						change: t.change,
+					return _extends({}, t, {
 						id: t.id - 1
-					};
+					});
 				}
 				return t;
 			});
@@ -23036,4 +23041,4 @@ var students = exports.students = function students(state, action) {
 	}
 };
 
-},{}]},{},[216]);
+},{"./student":222}]},{},[216]);
