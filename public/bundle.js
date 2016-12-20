@@ -22535,7 +22535,6 @@ var addStudent = exports.addStudent = function addStudent(name, department, stat
 	return {
 		type: 'ADD_STUDENT',
 		payload: {
-			id: +new Date(),
 			name: name,
 			department: department,
 			status: status
@@ -22584,19 +22583,17 @@ var _redux = require('redux');
 
 var _reactRedux = require('react-redux');
 
-var _reducers = require('./reducers');
+var _students = require('./reducers/students');
 
-var reducers = _interopRequireWildcard(_reducers);
+var _addingStudent = require('./reducers/addingStudent');
 
-var _App = require('./components/App');
+var _App = require('./containers/App');
 
 var _App2 = _interopRequireDefault(_App);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)((0, _redux.combineReducers)(reducers));
+var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }));
 
 function run() {
 	_reactDom2.default.render(_react2.default.createElement(
@@ -22608,7 +22605,7 @@ function run() {
 
 run();
 
-},{"./components/App":218,"./reducers":220,"react":204,"react-dom":38,"react-redux":174,"redux":210}],217:[function(require,module,exports){
+},{"./containers/App":220,"./reducers/addingStudent":221,"./reducers/students":222,"react":204,"react-dom":38,"react-redux":174,"redux":210}],217:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22681,129 +22678,6 @@ var AddItem = _react2.default.createClass({
 exports.default = AddItem;
 
 },{"react":204,"react-dom":38}],218:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _reactRedux = require('react-redux');
-
-var _actions = require('../actions');
-
-var _AddItem = require('./AddItem');
-
-var _AddItem2 = _interopRequireDefault(_AddItem);
-
-var _Item = require('./Item');
-
-var _Item2 = _interopRequireDefault(_Item);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var mapStateToProps = function mapStateToProps(_ref) {
-	var students = _ref.students,
-	    addingStudent = _ref.addingStudent;
-	return {
-		students: students,
-		addingStudent: addingStudent
-	};
-};
-
-var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return {
-		addStudent: function addStudent(name, department, status) {
-			return dispatch((0, _actions.addStudent)(name, department, status));
-		},
-		showAddStudent: function showAddStudent() {
-			return dispatch((0, _actions.showAddStudent)());
-		},
-		hideAddStudent: function hideAddStudent() {
-			return dispatch((0, _actions.hideAddStudent)());
-		},
-		toggleChange: function toggleChange(id) {
-			return dispatch((0, _actions.toggleChange)(id));
-		},
-		changeStudent: function changeStudent(id, name, department, status) {
-			return dispatch((0, _actions.changeStudent)(id, name, department, status));
-		},
-		remove: function remove(id) {
-			return dispatch((0, _actions.remove)(id));
-		}
-	};
-};
-
-var App = function (_Component) {
-	_inherits(App, _Component);
-
-	function App() {
-		_classCallCheck(this, App);
-
-		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
-	}
-
-	_createClass(App, [{
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'button',
-					{ onClick: function onClick(e) {
-							return _this2.props.showAddStudent();
-						} },
-					'Add Student'
-				),
-				this.props.addingStudent && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(a, b, c) {
-						return _this2.props.addStudent(a, b, c);
-					}, hideAdd: function hideAdd() {
-						return _this2.props.hideAddStudent();
-					} }),
-				_react2.default.createElement(
-					'div',
-					null,
-					this.props.students.map(function (item) {
-						return _react2.default.createElement(_Item2.default, { item: item,
-							toggleChange: function toggleChange(id) {
-								return _this2.props.toggleChange(id);
-							},
-							changeStudent: function changeStudent(a, b, c, d) {
-								return _this2.props.changeStudent(a, b, c, d);
-							},
-							remove: function remove(id) {
-								return _this2.props.remove(id);
-							} });
-					})
-				)
-			);
-		}
-	}]);
-
-	return App;
-}(_react.Component);
-
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App);
-
-},{"../actions":215,"./AddItem":217,"./Item":219,"react":204,"react-dom":38,"react-redux":174}],219:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22919,7 +22793,164 @@ var Item = _react2.default.createClass({
 
 exports.default = Item;
 
-},{"react":204,"react-dom":38}],220:[function(require,module,exports){
+},{"react":204,"react-dom":38}],219:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _AddItem = require('./AddItem');
+
+var _AddItem2 = _interopRequireDefault(_AddItem);
+
+var _Item = require('./Item');
+
+var _Item2 = _interopRequireDefault(_Item);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Students = _react2.default.createClass({
+	displayName: 'Students',
+	render: function render() {
+		var _this = this;
+
+		return _react2.default.createElement(
+			'div',
+			null,
+			_react2.default.createElement(
+				'button',
+				{ onClick: function onClick(e) {
+						return _this.props.showAddStudent();
+					} },
+				'Add Student'
+			),
+			this.props.addingStudent && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(a, b, c) {
+					return _this.props.addStudent(a, b, c);
+				}, hideAdd: function hideAdd() {
+					return _this.props.hideAddStudent();
+				} }),
+			_react2.default.createElement(
+				'div',
+				null,
+				this.props.students.map(function (item) {
+					return _react2.default.createElement(_Item2.default, { item: item,
+						toggleChange: function toggleChange(id) {
+							return _this.props.toggleChange(id);
+						},
+						changeStudent: function changeStudent(a, b, c, d) {
+							return _this.props.changeStudent(a, b, c, d);
+						},
+						remove: function remove(id) {
+							return _this.props.remove(id);
+						} });
+				})
+			)
+		);
+	}
+});
+
+exports.default = Students;
+
+},{"./AddItem":217,"./Item":218,"react":204,"react-dom":38}],220:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _reactRedux = require('react-redux');
+
+var _redux = require('redux');
+
+var _actions = require('../actions/actions');
+
+var actions = _interopRequireWildcard(_actions);
+
+var _Students = require('../components/Students');
+
+var _Students2 = _interopRequireDefault(_Students);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var mapStateToProps = function mapStateToProps(_ref) {
+	var students = _ref.students,
+	    addingStudent = _ref.addingStudent;
+	return {
+		students: students,
+		addingStudent: addingStudent
+	};
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	return (0, _redux.bindActionCreators)(actions, dispatch);
+};
+
+var App = function (_Component) {
+	_inherits(App, _Component);
+
+	function App() {
+		_classCallCheck(this, App);
+
+		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	}
+
+	_createClass(App, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(_Students2.default, this.props);
+		}
+	}]);
+
+	return App;
+}(_react.Component);
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App);
+
+},{"../actions/actions":215,"../components/Students":219,"react":204,"react-dom":38,"react-redux":174,"redux":210}],221:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var addingStudent = exports.addingStudent = function addingStudent(state, action) {
+	switch (action.type) {
+		case 'SHOW_ADD_STUDENT':
+			return true;
+		case 'HIDE_ADD_STUDENT':
+			return false;
+		default:
+			return !!state;
+	}
+};
+
+},{}],222:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -22928,13 +22959,13 @@ Object.defineProperty(exports, "__esModule", {
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-//reducers
-
+var counter = 0;
 var student = function student(state, action) {
 	switch (action.type) {
 		case 'ADD_STUDENT':
+			counter++;
 			return {
-				id: action.payload.id,
+				id: counter,
 				name: action.payload.name,
 				department: action.payload.department,
 				status: action.payload.status,
@@ -22966,6 +22997,7 @@ var student = function student(state, action) {
 			if (state.id !== action.id) {
 				return true;
 			}
+			counter--;
 			return false;
 		default:
 			return state;
@@ -22987,20 +23019,20 @@ var students = exports.students = function students(state, action) {
 		case 'DELETE':
 			return state.filter(function (t) {
 				return student(t, action);
+			}).map(function (t) {
+				if (t.id > action.id) {
+					return {
+						name: t.name,
+						department: t.department,
+						status: t.status,
+						change: t.change,
+						id: t.id - 1
+					};
+				}
+				return t;
 			});
 		default:
 			return state || [];
-	}
-};
-
-var addingStudent = exports.addingStudent = function addingStudent(state, action) {
-	switch (action.type) {
-		case 'SHOW_ADD_STUDENT':
-			return true;
-		case 'HIDE_ADD_STUDENT':
-			return false;
-		default:
-			return !!state;
 	}
 };
 

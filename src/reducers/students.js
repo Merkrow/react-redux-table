@@ -1,10 +1,10 @@
-//reducers
-
+let counter = 0;
 const student = ( state, action ) => {
 	switch (action.type) {
 		case 'ADD_STUDENT':
+			counter++;
 			return {
-				id: action.payload.id,
+				id: counter,
 				name: action.payload.name,
 				department: action.payload.department,
 				status: action.payload.status,
@@ -36,6 +36,7 @@ const student = ( state, action ) => {
 			if(state.id !== action.id) {
 				return true;
 			}
+			counter--;
 			return false;
 		default:
 			return state;
@@ -54,19 +55,19 @@ export const students = ( state, action ) => {
 		case 'CHANGE':
 			return state.map(t => student(t, action));
 		case 'DELETE':
-			return state.filter(t => student(t, action));
+			return state.filter(t => student(t, action)).map(t => {
+				if(t.id > action.id) {
+					return {
+						name: t.name,
+						department: t.department,
+						status: t.status,
+						change: t.change,
+						id: t.id-1
+					}
+				}
+				return t;
+			});
 		default:
 			return state || [];
 	}
 }
-
-export const addingStudent = ( state, action ) => {
-	switch (action.type) {
-		case 'SHOW_ADD_STUDENT':
-			return true;
-		case 'HIDE_ADD_STUDENT':
-			return false;
-		default:
-			return !!state;
-	}
-};

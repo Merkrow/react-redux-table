@@ -5,7 +5,6 @@ export const hideAddStudent = () => ({ type: 'HIDE_ADD_STUDENT' });
 export const addStudent = (name, department, status) => ({
 	type: 'ADD_STUDENT',
 	payload: {
-		id: +new Date,
 		name,
 		department,
 		status

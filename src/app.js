@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom';
 import { createStore, combineReducers } from 'redux';
 import { connect } from 'react-redux';
 import { Provider } from 'react-redux';	
-import * as reducers from './reducers';
-import App from './components/App';
+import { students } from './reducers/students';
+import { addingStudent } from './reducers/addingStudent';
+import App from './containers/App';
 
 
 
 
 
-const store = createStore(combineReducers(reducers));
+const store = createStore(combineReducers({ students, addingStudent }));
 
 
 function run() {
