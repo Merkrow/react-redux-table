@@ -6,14 +6,14 @@ import Item from './Item';
 const Students = React.createClass({
 	render() {
 		return <div>
-				<button onClick={ e => this.props.showAddStudent() }>Add Student</button>
-					{ this.props.addingStudent && <AddItem addStudent={(a,b,c) => this.props.addStudent(a,b,c)} hideAdd={() => this.props.hideAddStudent()} />}
+				<button onClick={ e => this.props.actions.showAddStudent() }>Add Student</button>
+					{ this.props.addingStudent && <AddItem addStudent={(a,b,c) => this.props.actions.addStudent(a,b,c)} hideAdd={() => this.props.actions.hideAddStudent()} />}
 					<div>
 						{ this.props.students.map((item) => {
-							return <Item item={item}
-							toggleChange={id => this.props.toggleChange(id)}
-							changeStudent={(a,b,c,d) => this.props.changeStudent(a,b,c,d)}
-							remove={(id) => this.props.remove(id)} />
+							return <Item key={item.id} item={item}
+							toggleChange={id => this.props.actions.toggleChange(id)}
+							changeStudent={(a,b,c,d) => this.props.actions.changeStudent(a,b,c,d)}
+							remove={(id) => this.props.actions.remove(id)} />
 							}
 						)}
 					</div>

@@ -10,7 +10,7 @@ const mapStateToProps = ({ students, addingStudent }) => ({
 	addingStudent
 })
 
-const mapDispatchToProps = (dispatch) => (bindActionCreators(actions, dispatch));
+const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });
 
 class App extends Component {
 	render() {

@@ -21,7 +21,7 @@ const Item = React.createClass({
 		const item = this.props.item;
 		if(!item.change) {
 			return (
-				<div key={item.id}>
+				<div>
 					<span>{item.id}</span><span>{item.name}</span><span>{item.department}</span><span style={{ backgroundColor: item.status }}>{item.status}</span><button onClick={() => this.props.toggleChange(item.id)}>change</button>
 				</div>
 			)

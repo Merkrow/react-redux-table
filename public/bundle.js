@@ -22722,7 +22722,7 @@ var Item = _react2.default.createClass({
 		if (!item.change) {
 			return _react2.default.createElement(
 				'div',
-				{ key: item.id },
+				null,
 				_react2.default.createElement(
 					'span',
 					null,
@@ -22832,28 +22832,28 @@ var Students = _react2.default.createClass({
 			_react2.default.createElement(
 				'button',
 				{ onClick: function onClick(e) {
-						return _this.props.showAddStudent();
+						return _this.props.actions.showAddStudent();
 					} },
 				'Add Student'
 			),
 			this.props.addingStudent && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(a, b, c) {
-					return _this.props.addStudent(a, b, c);
+					return _this.props.actions.addStudent(a, b, c);
 				}, hideAdd: function hideAdd() {
-					return _this.props.hideAddStudent();
+					return _this.props.actions.hideAddStudent();
 				} }),
 			_react2.default.createElement(
 				'div',
 				null,
 				this.props.students.map(function (item) {
-					return _react2.default.createElement(_Item2.default, { item: item,
+					return _react2.default.createElement(_Item2.default, { key: item.id, item: item,
 						toggleChange: function toggleChange(id) {
-							return _this.props.toggleChange(id);
+							return _this.props.actions.toggleChange(id);
 						},
 						changeStudent: function changeStudent(a, b, c, d) {
-							return _this.props.changeStudent(a, b, c, d);
+							return _this.props.actions.changeStudent(a, b, c, d);
 						},
 						remove: function remove(id) {
-							return _this.props.remove(id);
+							return _this.props.actions.remove(id);
 						} });
 				})
 			)
@@ -22912,7 +22912,7 @@ var mapStateToProps = function mapStateToProps(_ref) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	return (0, _redux.bindActionCreators)(actions, dispatch);
+	return { actions: (0, _redux.bindActionCreators)(actions, dispatch) };
 };
 
 var App = function (_Component) {
