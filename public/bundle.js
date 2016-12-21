@@ -22593,7 +22593,11 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }));
+var initialState = {
+	students: [],
+	addingStudent: false
+};
+var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }), initialState);
 
 function run() {
 	_reactDom2.default.render(_react2.default.createElement(

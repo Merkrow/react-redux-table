@@ -10,8 +10,11 @@ import App from './containers/App';
 
 
 
-
-const store = createStore(combineReducers({ students, addingStudent }));
+const initialState = {
+	students: [],
+	addingStudent: false
+};
+const store = createStore(combineReducers({ students, addingStudent }), initialState);
 
 
 function run() {
