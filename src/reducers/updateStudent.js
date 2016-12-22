@@ -1,4 +1,4 @@
-export const addingStudent = ( state, action ) => {
+export const updateStudent = ( state, action ) => {
 	switch (action.type) {
 		case 'SHOW_ADD_STUDENT':
 			return true;

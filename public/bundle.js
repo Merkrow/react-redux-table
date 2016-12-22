@@ -22629,7 +22629,8 @@ var AddItem = _react2.default.createClass({
 			this.refs.status.value = this.props.item.status;
 		}
 	},
-	updateStudent: function updateStudent(id) {
+	updateStudent: function updateStudent(e, id) {
+		e.preventDefault();
 		var name = _reactDom2.default.findDOMNode(this.refs.name).value;
 		var department = _reactDom2.default.findDOMNode(this.refs.department).value;
 		var status = _reactDom2.default.findDOMNode(this.refs.status).value;
@@ -22642,7 +22643,8 @@ var AddItem = _react2.default.createClass({
 			this.props.hideAdd();
 		}
 	},
-	remove: function remove(id) {
+	remove: function remove(e, id) {
+		e.preventDefault();
 		this.props.remove(id);
 		this.props.hideAdd();
 	},
@@ -22650,52 +22652,56 @@ var AddItem = _react2.default.createClass({
 		var _this = this;
 
 		return _react2.default.createElement(
-			'div',
+			'form',
 			null,
-			_react2.default.createElement('input', { ref: 'name' }),
-			_react2.default.createElement('input', { ref: 'department' }),
 			_react2.default.createElement(
-				'select',
-				{ ref: 'status' },
-				_react2.default.createElement(
-					'option',
-					null,
-					'red'
-				),
-				_react2.default.createElement(
-					'option',
-					null,
-					'green'
-				),
-				_react2.default.createElement(
-					'option',
-					null,
-					'yellow'
-				)
-			),
-			!this.props.changeId && _react2.default.createElement(
-				'button',
-				{ onClick: function onClick(e) {
-						return _this.updateStudent();
-					} },
-				'Submit'
-			),
-			this.props.changeId && _react2.default.createElement(
 				'div',
 				null,
+				_react2.default.createElement('input', { ref: 'name' }),
+				_react2.default.createElement('input', { ref: 'department' }),
 				_react2.default.createElement(
+					'select',
+					{ ref: 'status' },
+					_react2.default.createElement(
+						'option',
+						null,
+						'red'
+					),
+					_react2.default.createElement(
+						'option',
+						null,
+						'green'
+					),
+					_react2.default.createElement(
+						'option',
+						null,
+						'yellow'
+					)
+				),
+				!this.props.changeId && _react2.default.createElement(
 					'button',
 					{ onClick: function onClick(e) {
-							return _this.updateStudent(_this.props.changeId);
+							return _this.updateStudent(e);
 						} },
 					'Submit'
 				),
-				_react2.default.createElement(
-					'button',
-					{ onClick: function onClick(e) {
-							return _this.remove(_this.props.changeId);
-						} },
-					'DELETE'
+				this.props.changeId && _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'button',
+						{ onClick: function onClick(e) {
+								return _this.updateStudent(e, _this.props.changeId);
+							} },
+						'Submit'
+					),
+					_react2.default.createElement(
+						'button',
+						{ onClick: function onClick(e) {
+								return _this.remove(e, _this.props.changeId);
+							} },
+						'DELETE'
+					)
 				)
 			)
 		);
@@ -22788,6 +22794,11 @@ var _Item2 = _interopRequireDefault(_Item);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/*  
+	this.props.updateStudent could be false (form is not visible), true (form is visible for adding new Student), 
+	number (form is visible for editing current element)
+*/
+
 var Students = _react2.default.createClass({
 	displayName: 'Students',
 	render: function render() {
@@ -22803,22 +22814,27 @@ var Students = _react2.default.createClass({
 					} },
 				'Add Student'
 			),
-			this.props.addingStudent && typeof this.props.addingStudent === "boolean" && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(a, b, c) {
-					return _this.props.actions.addStudent(a, b, c);
-				}, hideAdd: function hideAdd() {
+			this.props.updateStudent && typeof this.props.updateStudent === "boolean" && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(name, department, status) {
+					return _this.props.actions.addStudent(name, department, status);
+				},
+				hideAdd: function hideAdd() {
 					return _this.props.actions.hideAddStudent();
 				} }),
-			this.props.addingStudent && typeof this.props.addingStudent === "number" && _react2.default.createElement(_AddItem2.default, { changeId: this.props.addingStudent, remove: function remove(id) {
+			this.props.updateStudent && typeof this.props.updateStudent === "number" && _react2.default.createElement(_AddItem2.default, { changeId: this.props.updateStudent,
+				remove: function remove(id) {
 					return _this.props.actions.remove(id);
-				}, item: this.props.students.students[this.props.addingStudent - 1], changeStudent: function changeStudent(a, b, c, d) {
-					return _this.props.actions.changeStudent(a, b, c, d);
-				}, hideAdd: function hideAdd() {
+				},
+				item: this.props.students.students[this.props.updateStudent - 1],
+				changeStudent: function changeStudent(id, name, department, status) {
+					return _this.props.actions.changeStudent(id, name, department, status);
+				},
+				hideAdd: function hideAdd() {
 					return _this.props.actions.hideAddStudent();
 				} }),
 			_react2.default.createElement(
 				'div',
 				null,
-				this.props.students.students.map(function (item) {
+				!this.props.updateStudent && this.props.students.students.map(function (item) {
 					return _react2.default.createElement(_Item2.default, { key: item.id, item: item,
 						toggleChange: function toggleChange(id) {
 							return _this.props.actions.toggleChange(id);
@@ -22875,10 +22891,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var mapStateToProps = function mapStateToProps(_ref) {
 	var students = _ref.students,
-	    addingStudent = _ref.addingStudent;
+	    updateStudent = _ref.updateStudent;
 	return {
 		students: students,
-		addingStudent: addingStudent
+		updateStudent: updateStudent
 	};
 };
 
@@ -22913,25 +22929,6 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-var addingStudent = exports.addingStudent = function addingStudent(state, action) {
-	switch (action.type) {
-		case 'SHOW_ADD_STUDENT':
-			return true;
-		case 'HIDE_ADD_STUDENT':
-			return false;
-		case 'TOGGLE_CHANGE':
-			return action.id;
-		default:
-			return !!state;
-	}
-};
-
-},{}],222:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -22961,7 +22958,7 @@ var student = function student(state, action) {
 
 exports.default = student;
 
-},{}],223:[function(require,module,exports){
+},{}],222:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23009,7 +23006,26 @@ var students = exports.students = function students(state, action) {
 	}
 };
 
-},{"./student":222}],224:[function(require,module,exports){
+},{"./student":221}],223:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var updateStudent = exports.updateStudent = function updateStudent(state, action) {
+	switch (action.type) {
+		case 'SHOW_ADD_STUDENT':
+			return true;
+		case 'HIDE_ADD_STUDENT':
+			return false;
+		case 'TOGGLE_CHANGE':
+			return action.id;
+		default:
+			return !!state;
+	}
+};
+
+},{}],224:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23020,15 +23036,15 @@ var _redux = require('redux');
 
 var _students = require('../reducers/students');
 
-var _addingStudent = require('../reducers/addingStudent');
+var _updateStudent = require('../reducers/updateStudent');
 
 var initialState = {
 	students: { students: [] },
-	addingStudent: false
+	updateStudent: false
 };
 
-var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }), initialState);
+var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, updateStudent: _updateStudent.updateStudent }), initialState);
 
 exports.default = store;
 
-},{"../reducers/addingStudent":221,"../reducers/students":223,"redux":210}]},{},[216]);
+},{"../reducers/students":222,"../reducers/updateStudent":223,"redux":210}]},{},[216]);

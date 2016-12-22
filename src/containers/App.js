@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux';
 import * as actions from '../actions/actions';
 import Students from '../components/Students';
 
-const mapStateToProps = ({ students, addingStudent }) => ({
+const mapStateToProps = ({ students, updateStudent }) => ({
 	students,
-	addingStudent
+	updateStudent
 })
 
 const mapDispatchToProps = (dispatch) => ({ actions: bindActionCreators(actions, dispatch) });

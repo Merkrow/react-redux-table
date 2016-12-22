@@ -1,13 +1,13 @@
 import { createStore, combineReducers } from 'redux';
 import { students } from '../reducers/students';
-import { addingStudent } from '../reducers/addingStudent';
+import { updateStudent } from '../reducers/updateStudent';
 
 const initialState = {
 	students: { students: [] },
-	addingStudent: false
+	updateStudent: false
 };
 
-const store = createStore(combineReducers({ students, addingStudent }), initialState);
+const store = createStore(combineReducers({ students, updateStudent }), initialState);
 
 
 export default store;

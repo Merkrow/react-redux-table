@@ -12,7 +12,8 @@ const AddItem = React.createClass({
 			this.refs.status.value = this.props.item.status;
 		}
 	},
-	updateStudent(id) {
+	updateStudent(e, id) {
+		e.preventDefault();
 		let name = ReactDOM.findDOMNode(this.refs.name).value;
 		let department = ReactDOM.findDOMNode(this.refs.department).value;
 		let status = ReactDOM.findDOMNode(this.refs.status).value;
@@ -25,24 +26,27 @@ const AddItem = React.createClass({
 			this.props.hideAdd();
 		}
 	},
-	remove(id) {
+	remove(e, id) {
+		e.preventDefault();
 		this.props.remove(id);
 		this.props.hideAdd();
 	},
 	render() {
 			return (
-				<div>
-					<input ref='name'/>
-					<input ref='department' />
-					<select ref='status'>
-						<option>red</option>
-						<option>green</option>
-						<option>yellow</option>
-					</select>
-					{ !this.props.changeId && <button onClick={e => this.updateStudent()}>Submit</button> }
-					{ this.props.changeId && <div><button onClick={ e => this.updateStudent(this.props.changeId) }>Submit</button>
-					<button onClick={ e => this.remove(this.props.changeId) }>DELETE</button></div> }
-				</div>
+				<form>
+					<div>
+						<input ref='name'/>
+						<input ref='department' />
+						<select ref='status'>
+							<option>red</option>
+							<option>green</option>
+							<option>yellow</option>
+						</select>
+						{ !this.props.changeId && <button onClick={e => this.updateStudent(e)}>Submit</button> }
+						{ this.props.changeId && <div><button onClick={ e => this.updateStudent(e, this.props.changeId) }>Submit</button>
+						<button onClick={ e => this.remove(e, this.props.changeId) }>DELETE</button></div> }
+					</div>
+				</form>
 				)
 	}
 });

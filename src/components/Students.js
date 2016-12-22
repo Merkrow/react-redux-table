@@ -3,14 +3,28 @@ import ReactDOM from 'react-dom';
 import AddItem from './AddItem';
 import Item from './Item';
 
+/*  
+	this.props.updateStudent could be false (form is not visible), true (form is visible for adding new Student), 
+	number (form is visible for editing current element)
+*/
+
 const Students = React.createClass({
 	render() {
 		return <div>
 				<button onClick={ e => this.props.actions.showAddStudent() }>Add Student</button>
-					{ this.props.addingStudent && typeof this.props.addingStudent === "boolean" && <AddItem addStudent={(a,b,c) => this.props.actions.addStudent(a,b,c)} hideAdd={() => this.props.actions.hideAddStudent()} />}
-					{ this.props.addingStudent && typeof this.props.addingStudent === "number" && <AddItem changeId={this.props.addingStudent} remove={id => this.props.actions.remove(id)} item={this.props.students.students[this.props.addingStudent-1]} changeStudent={(a,b,c,d) => this.props.actions.changeStudent(a,b,c,d)} hideAdd={() => this.props.actions.hideAddStudent()} />}
+					{ this.props.updateStudent && 
+					typeof this.props.updateStudent === "boolean" && 
+					<AddItem addStudent={(name, department, status) => this.props.actions.addStudent(name, department, status)} 
+							 hideAdd={() => this.props.actions.hideAddStudent()} />}
+					{ this.props.updateStudent && 
+					typeof this.props.updateStudent === "number" && 
+					<AddItem changeId={this.props.updateStudent} 
+							 remove={id => this.props.actions.remove(id)}
+							 item={this.props.students.students[this.props.updateStudent-1]}
+							 changeStudent={(id, name, department, status) => this.props.actions.changeStudent(id, name, department, status)}
+							 hideAdd={() => this.props.actions.hideAddStudent()} />}
 					<div>
-						{ !this.props.addingStudent && this.props.students.students.map((item) => {
+						{ !this.props.updateStudent && this.props.students.students.map((item) => {
 								return <Item key={item.id} item={item}
 								toggleChange={id => this.props.actions.toggleChange(id)}
 								remove={(id) => this.props.actions.remove(id)} />
