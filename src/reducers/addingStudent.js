@@ -4,6 +4,8 @@ export const addingStudent = ( state, action ) => {
 			return true;
 		case 'HIDE_ADD_STUDENT':
 			return false;
+		case 'TOGGLE_CHANGE':
+			return action.id;
 		default:
 			return !!state;
 	}

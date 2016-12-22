@@ -5,24 +5,14 @@ const student = ( state, action ) => {
 			counter++;
 			return {
 				id: counter,
-				...action.payload,
-				change: false
-			}
-		case 'TOGGLE_CHANGE':
-			if(state.id !== action.id) {
-				return state;
-			}
-			return {
-				...state,
-				change: !state.change
+				...action.payload
 			}
 		case 'CHANGE':
 			if(state.id !== action.payload.id) {
 				return state;
 			}
 			return {
-				...action.payload,
-				change: !state.change
+				...action.payload
 			}
 		case 'DELETE':
 			if(state.id !== action.id) {

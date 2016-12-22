@@ -11,7 +11,7 @@ import App from './containers/App';
 
 
 const initialState = {
-	students: [],
+	students: { students: [] },
 	addingStudent: false
 };
 const store = createStore(combineReducers({ students, addingStudent }), initialState);

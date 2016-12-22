@@ -7,13 +7,13 @@ const Students = React.createClass({
 	render() {
 		return <div>
 				<button onClick={ e => this.props.actions.showAddStudent() }>Add Student</button>
-					{ this.props.addingStudent && <AddItem addStudent={(a,b,c) => this.props.actions.addStudent(a,b,c)} hideAdd={() => this.props.actions.hideAddStudent()} />}
+					{ this.props.addingStudent && typeof this.props.addingStudent === "boolean" && <AddItem addStudent={(a,b,c) => this.props.actions.addStudent(a,b,c)} hideAdd={() => this.props.actions.hideAddStudent()} />}
+					{ this.props.addingStudent && typeof this.props.addingStudent === "number" && <AddItem changeId={this.props.addingStudent} remove={id => this.props.actions.remove(id)} item={this.props.students.students[this.props.addingStudent-1]} changeStudent={(a,b,c,d) => this.props.actions.changeStudent(a,b,c,d)} hideAdd={() => this.props.actions.hideAddStudent()} />}
 					<div>
-						{ this.props.students.map((item) => {
-							return <Item key={item.id} item={item}
-							toggleChange={id => this.props.actions.toggleChange(id)}
-							changeStudent={(a,b,c,d) => this.props.actions.changeStudent(a,b,c,d)}
-							remove={(id) => this.props.actions.remove(id)} />
+						{ this.props.students.students.map((item) => {
+								return <Item key={item.id} item={item}
+								toggleChange={id => this.props.actions.toggleChange(id)}
+								remove={(id) => this.props.actions.remove(id)} />
 							}
 						)}
 					</div>

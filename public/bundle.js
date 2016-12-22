@@ -22594,7 +22594,7 @@ var _App2 = _interopRequireDefault(_App);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var initialState = {
-	students: [],
+	students: { students: [] },
 	addingStudent: false
 };
 var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }), initialState);
@@ -22631,15 +22631,28 @@ var AddItem = _react2.default.createClass({
 	componentDidMount: function componentDidMount() {
 		var el = _reactDom2.default.findDOMNode(this.refs.name);
 		if (el) el.focus();
+		if (this.props.changeId) {
+			this.refs.name.value = this.props.item.name;
+			this.refs.department.value = this.props.item.department;
+			this.refs.status.value = this.props.item.status;
+		}
 	},
-	createStudent: function createStudent() {
+	updateStudent: function updateStudent(id) {
 		var name = _reactDom2.default.findDOMNode(this.refs.name).value;
 		var department = _reactDom2.default.findDOMNode(this.refs.department).value;
 		var status = _reactDom2.default.findDOMNode(this.refs.status).value;
 		if (name !== "" && department !== "" && status !== "") {
-			this.props.addStudent(name, department, status);
+			if (id) {
+				this.props.changeStudent(id, name, department, status);
+			} else {
+				this.props.addStudent(name, department, status);
+			}
 			this.props.hideAdd();
 		}
+	},
+	remove: function remove(id) {
+		this.props.remove(id);
+		this.props.hideAdd();
 	},
 	render: function render() {
 		var _this = this;
@@ -22668,12 +22681,30 @@ var AddItem = _react2.default.createClass({
 					'yellow'
 				)
 			),
-			_react2.default.createElement(
+			!this.props.changeId && _react2.default.createElement(
 				'button',
 				{ onClick: function onClick(e) {
-						return _this.createStudent();
+						return _this.updateStudent();
 					} },
 				'Submit'
+			),
+			this.props.changeId && _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(
+					'button',
+					{ onClick: function onClick(e) {
+							return _this.updateStudent(_this.props.changeId);
+						} },
+					'Submit'
+				),
+				_react2.default.createElement(
+					'button',
+					{ onClick: function onClick(e) {
+							return _this.remove(_this.props.changeId);
+						} },
+					'DELETE'
+				)
 			)
 		);
 	}
@@ -22700,95 +22731,39 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var Item = _react2.default.createClass({
 	displayName: 'Item',
-	componentDidUpdate: function componentDidUpdate() {
-		if (this.refs.n && this.refs.d && this.refs.s) {
-			this.refs.n.value = this.props.item.name;
-			this.refs.d.value = this.props.item.department;
-			this.refs.s.value = this.props.item.status;
-		}
-	},
-	changeStudent: function changeStudent(id) {
-		var name = _reactDom2.default.findDOMNode(this.refs.n).value;
-		var department = _reactDom2.default.findDOMNode(this.refs.d).value;
-		var status = _reactDom2.default.findDOMNode(this.refs.s).value;
-		if (name !== "" && department !== "" && status !== "") {
-			this.props.changeStudent(id, name, department, status);
-		}
-	},
 	render: function render() {
 		var _this = this;
 
 		var item = this.props.item;
-		if (!item.change) {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					'span',
-					null,
-					item.id
-				),
-				_react2.default.createElement(
-					'span',
-					null,
-					item.name
-				),
-				_react2.default.createElement(
-					'span',
-					null,
-					item.department
-				),
-				_react2.default.createElement(
-					'span',
-					{ style: { backgroundColor: item.status } },
-					item.status
-				),
-				_react2.default.createElement(
-					'button',
-					{ onClick: function onClick() {
-							return _this.props.toggleChange(item.id);
-						} },
-					'change'
-				)
-			);
-		}
 		return _react2.default.createElement(
 			'div',
 			null,
-			_react2.default.createElement('input', { ref: 'n' }),
-			_react2.default.createElement('input', { ref: 'd' }),
 			_react2.default.createElement(
-				'select',
-				{ ref: 's' },
-				_react2.default.createElement(
-					'option',
-					null,
-					'red'
-				),
-				_react2.default.createElement(
-					'option',
-					null,
-					'green'
-				),
-				_react2.default.createElement(
-					'option',
-					null,
-					'yellow'
-				)
+				'span',
+				null,
+				item.id
+			),
+			_react2.default.createElement(
+				'span',
+				null,
+				item.name
+			),
+			_react2.default.createElement(
+				'span',
+				null,
+				item.department
+			),
+			_react2.default.createElement(
+				'span',
+				{ style: { backgroundColor: item.status } },
+				item.status
 			),
 			_react2.default.createElement(
 				'button',
-				{ onClick: function onClick(e) {
-						return _this.props.remove(item.id);
+				{ onClick: function onClick() {
+						return _this.props.toggleChange(item.id);
 					} },
-				'DELETE'
-			),
-			_react2.default.createElement(
-				'button',
-				{ onClick: function onClick(e) {
-						return _this.changeStudent(item.id);
-					} },
-				'Submit'
+				'change'
 			)
 		);
 	}
@@ -22836,21 +22811,25 @@ var Students = _react2.default.createClass({
 					} },
 				'Add Student'
 			),
-			this.props.addingStudent && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(a, b, c) {
+			this.props.addingStudent && typeof this.props.addingStudent === "boolean" && _react2.default.createElement(_AddItem2.default, { addStudent: function addStudent(a, b, c) {
 					return _this.props.actions.addStudent(a, b, c);
+				}, hideAdd: function hideAdd() {
+					return _this.props.actions.hideAddStudent();
+				} }),
+			this.props.addingStudent && typeof this.props.addingStudent === "number" && _react2.default.createElement(_AddItem2.default, { changeId: this.props.addingStudent, remove: function remove(id) {
+					return _this.props.actions.remove(id);
+				}, item: this.props.students.students[this.props.addingStudent - 1], changeStudent: function changeStudent(a, b, c, d) {
+					return _this.props.actions.changeStudent(a, b, c, d);
 				}, hideAdd: function hideAdd() {
 					return _this.props.actions.hideAddStudent();
 				} }),
 			_react2.default.createElement(
 				'div',
 				null,
-				this.props.students.map(function (item) {
+				this.props.students.students.map(function (item) {
 					return _react2.default.createElement(_Item2.default, { key: item.id, item: item,
 						toggleChange: function toggleChange(id) {
 							return _this.props.actions.toggleChange(id);
-						},
-						changeStudent: function changeStudent(a, b, c, d) {
-							return _this.props.actions.changeStudent(a, b, c, d);
 						},
 						remove: function remove(id) {
 							return _this.props.actions.remove(id);
@@ -22948,6 +22927,8 @@ var addingStudent = exports.addingStudent = function addingStudent(state, action
 			return true;
 		case 'HIDE_ADD_STUDENT':
 			return false;
+		case 'TOGGLE_CHANGE':
+			return action.id;
 		default:
 			return !!state;
 	}
@@ -22969,23 +22950,12 @@ var student = function student(state, action) {
 			counter++;
 			return _extends({
 				id: counter
-			}, action.payload, {
-				change: false
-			});
-		case 'TOGGLE_CHANGE':
-			if (state.id !== action.id) {
-				return state;
-			}
-			return _extends({}, state, {
-				change: !state.change
-			});
+			}, action.payload);
 		case 'CHANGE':
 			if (state.id !== action.payload.id) {
 				return state;
 			}
-			return _extends({}, action.payload, {
-				change: !state.change
-			});
+			return _extends({}, action.payload);
 		case 'DELETE':
 			if (state.id !== action.id) {
 				return true;
@@ -23020,28 +22990,30 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 var students = exports.students = function students(state, action) {
 	switch (action.type) {
 		case 'ADD_STUDENT':
-			return [].concat(_toConsumableArray(state), [(0, _student2.default)(undefined, action)]);
-		case 'TOGGLE_CHANGE':
-			return state.map(function (t) {
-				return (0, _student2.default)(t, action);
+			return _extends({}, state, {
+				students: [].concat(_toConsumableArray(state.students), [(0, _student2.default)(undefined, action)])
 			});
 		case 'CHANGE':
-			return state.map(function (t) {
-				return (0, _student2.default)(t, action);
+			return _extends({}, state, {
+				students: state.students.map(function (t) {
+					return (0, _student2.default)(t, action);
+				})
 			});
 		case 'DELETE':
-			return state.filter(function (t) {
-				return (0, _student2.default)(t, action);
-			}).map(function (t) {
-				if (t.id > action.id) {
-					return _extends({}, t, {
-						id: t.id - 1
-					});
-				}
-				return t;
+			return _extends({}, state, {
+				students: state.students.filter(function (t) {
+					return (0, _student2.default)(t, action);
+				}).map(function (t) {
+					if (t.id > action.id) {
+						return _extends({}, t, {
+							id: t.id - 1
+						});
+					}
+					return t;
+				})
 			});
 		default:
-			return state || [];
+			return state || { students: [] };
 	}
 };
 

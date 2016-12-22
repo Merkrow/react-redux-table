@@ -5,16 +5,16 @@ module.exports = {
   entry: [
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './app/index'
+    './src/app'
   ],
   devtool: 'eval',
   output: {
-    path: __dirname,
+    path: 'public',
     filename: 'bundle.js',
     publicPath: '/static/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    "transform-object-rest-spread"
   ],
   resolve: {
     extensions: ['', '.js']
@@ -24,7 +24,7 @@ module.exports = {
       {
         test: /\.js?$/,
         loaders: ['babel'],
-        include: path.join(__dirname, 'app')
+        include: path.join('public', 'app')
       },
       {
         test: /\.css$/,
