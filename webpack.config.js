@@ -3,8 +3,6 @@ var webpack = require('webpack');
 
 module.exports = {
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
     './src/app'
   ],
   devtool: 'eval',
@@ -13,6 +11,9 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/static/'
   },
+  presets: [
+    "react", 'es2015'
+  ],
   plugins: [
     "transform-object-rest-spread"
   ],
