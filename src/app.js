@@ -1,20 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { createStore, combineReducers } from 'redux';
-import { connect } from 'react-redux';
 import { Provider } from 'react-redux';	
-import { students } from './reducers/students';
-import { addingStudent } from './reducers/addingStudent';
+import store from './store/store';
 import App from './containers/App';
-
-
-
-
-const initialState = {
-	students: { students: [] },
-	addingStudent: false
-};
-const store = createStore(combineReducers({ students, addingStudent }), initialState);
 
 
 function run() {

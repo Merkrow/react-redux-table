@@ -22579,13 +22579,11 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _redux = require('redux');
-
 var _reactRedux = require('react-redux');
 
-var _students = require('./reducers/students');
+var _store = require('./store/store');
 
-var _addingStudent = require('./reducers/addingStudent');
+var _store2 = _interopRequireDefault(_store);
 
 var _App = require('./containers/App');
 
@@ -22593,23 +22591,17 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var initialState = {
-	students: { students: [] },
-	addingStudent: false
-};
-var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }), initialState);
-
 function run() {
 	_reactDom2.default.render(_react2.default.createElement(
 		_reactRedux.Provider,
-		{ store: store },
+		{ store: _store2.default },
 		_react2.default.createElement(_App2.default, null)
 	), document.getElementById('root'));
 }
 
 run();
 
-},{"./containers/App":220,"./reducers/addingStudent":221,"./reducers/students":223,"react":204,"react-dom":38,"react-redux":174,"redux":210}],217:[function(require,module,exports){
+},{"./containers/App":220,"./store/store":224,"react":204,"react-dom":38,"react-redux":174}],217:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -23017,4 +23009,26 @@ var students = exports.students = function students(state, action) {
 	}
 };
 
-},{"./student":222}]},{},[216]);
+},{"./student":222}],224:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _redux = require('redux');
+
+var _students = require('../reducers/students');
+
+var _addingStudent = require('../reducers/addingStudent');
+
+var initialState = {
+	students: { students: [] },
+	addingStudent: false
+};
+
+var store = (0, _redux.createStore)((0, _redux.combineReducers)({ students: _students.students, addingStudent: _addingStudent.addingStudent }), initialState);
+
+exports.default = store;
+
+},{"../reducers/addingStudent":221,"../reducers/students":223,"redux":210}]},{},[216]);
