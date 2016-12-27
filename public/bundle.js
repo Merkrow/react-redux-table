@@ -27204,30 +27204,13 @@ var _store = require('./store/store');
 
 var _store2 = _interopRequireDefault(_store);
 
-var _App = require('./containers/App');
-
-var _App2 = _interopRequireDefault(_App);
-
-var _index = require('./containers/LoginPage/index');
-
-var _index2 = _interopRequireDefault(_index);
-
-var _navigation = require('./components/navigation');
-
-var _navigation2 = _interopRequireDefault(_navigation);
-
 var _reactRouter = require('react-router');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _routes = require('./routes/routes');
 
-var routes = _react2.default.createElement(
-	_reactRouter.Route,
-	{ path: '/' },
-	_react2.default.createElement(_reactRouter.IndexRedirect, { to: 'login' }),
-	_react2.default.createElement(_reactRouter.Route, { path: '/login', component: _index2.default }),
-	_react2.default.createElement(_reactRouter.Route, { path: '/students', component: _App2.default }),
-	_react2.default.createElement(_reactRouter.Route, { path: '*', component: _navigation2.default })
-);
+var _routes2 = _interopRequireDefault(_routes);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function run() {
 	_reactDom2.default.render(_react2.default.createElement(
@@ -27236,14 +27219,14 @@ function run() {
 		_react2.default.createElement(
 			_reactRouter.Router,
 			{ history: _reactRouter.browserHistory },
-			routes
+			_routes2.default
 		)
 	), document.getElementById('root'));
 }
 
 run();
 
-},{"./components/navigation":275,"./containers/App":276,"./containers/LoginPage/index":277,"./store/store":283,"react":255,"react-dom":56,"react-redux":192,"react-router":224}],271:[function(require,module,exports){
+},{"./routes/routes":283,"./store/store":284,"react":255,"react-dom":56,"react-redux":192,"react-router":224}],271:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27942,6 +27925,48 @@ var userState = exports.userState = function userState(state, action) {
 };
 
 },{}],283:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _index = require('../containers/LoginPage/index');
+
+var _index2 = _interopRequireDefault(_index);
+
+var _App = require('../containers/App');
+
+var _App2 = _interopRequireDefault(_App);
+
+var _navigation = require('../components/navigation');
+
+var _navigation2 = _interopRequireDefault(_navigation);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var routes = _react2.default.createElement(
+	_reactRouter.Route,
+	{ path: '/' },
+	_react2.default.createElement(_reactRouter.IndexRedirect, { to: 'login' }),
+	_react2.default.createElement(_reactRouter.Route, { path: '/login', component: _index2.default }),
+	_react2.default.createElement(_reactRouter.Route, { path: '/students', component: _App2.default }),
+	_react2.default.createElement(_reactRouter.Route, { path: '*', component: _navigation2.default })
+);
+
+exports.default = routes;
+
+},{"../components/navigation":275,"../containers/App":276,"../containers/LoginPage/index":277,"react":255,"react-dom":56,"react-router":224}],284:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
