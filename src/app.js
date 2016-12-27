@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import store from './store/store';
 import { Router, browserHistory } from 'react-router';
 import routes from './routes/routes';
+import test from './tests/test';
+
+test();
 
 function run() {
 	ReactDOM.render(
