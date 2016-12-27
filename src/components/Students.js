@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AddItem from './AddItem';
 import Item from './Item';
+import { browserHistory } from 'react-router';
 
 /*  
 	this.props.updateStudent could be false (form is not visible), true (form is visible for adding new Student), 
@@ -9,7 +10,12 @@ import Item from './Item';
 */
 
 const Students = React.createClass({
-	render() {
+	componentWillMount() {
+		if(!this.props.userState) {
+			browserHistory.push('/');
+		}
+	},
+ 	render() {
 		return <div>
 				<button onClick={ e => this.props.actions.showAddStudent() }>Add Student</button>
 					{ this.props.updateStudent && 
