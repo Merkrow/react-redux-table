@@ -27430,6 +27430,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var LoginForm = _react2.default.createClass({
 	displayName: 'LoginForm',
+	componentDidMount: function componentDidMount() {
+		var email = window.localStorage['login_email'];
+		var password = window.localStorage['login_pw'];
+		if (email && this.validateEmail(email) && password) {
+			this.props.actions.login();
+		}
+	},
 	validateEmail: function validateEmail(email) {
 		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
