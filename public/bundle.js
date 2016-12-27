@@ -31482,7 +31482,7 @@ var LoginForm = _react2.default.createClass({
 				{ className: 'login_form', onSubmit: function onSubmit(e) {
 						return _this.handleLogin(e);
 					} },
-				_react2.default.createElement('input', { type: 'text', className: this.state.notValid ? 'error' : '', placeholder: 'email' }),
+				_react2.default.createElement('input', { type: 'text', autoFocus: true, className: this.state.notValid ? 'error' : '', placeholder: 'email' }),
 				_react2.default.createElement('input', { type: 'password', placeholder: 'password' }),
 				_react2.default.createElement(
 					'button',

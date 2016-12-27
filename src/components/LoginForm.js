@@ -38,7 +38,7 @@ const LoginForm = React.createClass({
 	render() {
 		return ( <div>
 				{ !this.props.userState && (<form className='login_form' onSubmit={ (e) => this.handleLogin(e) }>
-					<input type='text' className={this.state.notValid ? 'error' : ''} placeholder='email' />
+					<input type='text' autoFocus={true} className={this.state.notValid ? 'error' : ''} placeholder='email' />
 					<input type='password' placeholder='password' />
 					<button type='submit'>Login</button>
 				</form>) }
