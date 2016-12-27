@@ -27411,35 +27411,35 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = require('react-router');
 
+var _util = require('../util/util');
+
+var _util2 = _interopRequireDefault(_util);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LoginForm = _react2.default.createClass({
 	displayName: 'LoginForm',
 	componentDidMount: function componentDidMount() {
-		var email = window.localStorage['login_email'];
-		var password = window.localStorage['login_pw'];
-		if (email && this.validateEmail(email) && password) {
+		var email = _util2.default.getEmail();
+		var password = _util2.default.getPassword();
+		if (email && _util2.default.validateEmail(email) && password) {
 			this.props.actions.login();
 		}
-	},
-	validateEmail: function validateEmail(email) {
-		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return re.test(email);
 	},
 	handleLogin: function handleLogin(e) {
 		e.preventDefault();
 		var email = e.target.elements[0].value;
 		var password = e.target.elements[1].value;
-		if (this.validateEmail(email) && password) {
-			window.localStorage.setItem('login_email', email);
-			window.localStorage.setItem('login_pw', password);
+		if (_util2.default.validateEmail(email) && password) {
+			_util2.default.setEmail(email);
+			_util2.default.setPassword(password);
 			_reactRouter.browserHistory.push('/students');
 			this.props.actions.login();
 		}
 	},
 	handleLogout: function handleLogout(e) {
 		e.preventDefault();
-		window.localStorage.clear();
+		_util2.default.clearStorage();
 		this.props.actions.logout();
 	},
 	render: function render() {
@@ -27483,7 +27483,7 @@ var LoginForm = _react2.default.createClass({
 
 exports.default = LoginForm;
 
-},{"react":255,"react-dom":56,"react-router":224}],274:[function(require,module,exports){
+},{"../util/util":285,"react":255,"react-dom":56,"react-router":224}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -27987,4 +27987,34 @@ var store = (0, _redux.createStore)(_index.rootReducer, initialState);
 
 exports.default = store;
 
-},{"../reducers/index":278,"redux":261}]},{},[270]);
+},{"../reducers/index":278,"redux":261}],285:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var util = {
+	validateEmail: function validateEmail(email) {
+		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+	},
+	setEmail: function setEmail(email) {
+		window.localStorage.setItem('login_email', email);
+	},
+	setPassword: function setPassword(password) {
+		window.localStorage.setItem('login_pw', password);
+	},
+	clearStorage: function clearStorage() {
+		window.localStorage.clear();
+	},
+	getEmail: function getEmail() {
+		return window.localStorage['login_email'];
+	},
+	getPassword: function getPassword() {
+		return window.localStorage['login_pw'];
+	}
+};
+
+exports.default = util;
+
+},{}]},{},[270]);

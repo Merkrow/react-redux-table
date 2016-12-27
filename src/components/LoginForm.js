@@ -1,33 +1,30 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { browserHistory } from 'react-router';
+import util from '../util/util';
 
 const LoginForm = React.createClass({
 	componentDidMount() {
-		const email = window.localStorage['login_email'];
-		const password = window.localStorage['login_pw'];
-		if(email && this.validateEmail(email) && password) {
+		const email = util.getEmail();
+		const password = util.getPassword();
+		if(email && util.validateEmail(email) && password) {
 			this.props.actions.login();
 		}
-	},
-	validateEmail(email) {
-    	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    	return re.test(email);
 	},
 	handleLogin(e) {
 		e.preventDefault();
 		const email = e.target.elements[0].value;
 		const password = e.target.elements[1].value;
-		if(this.validateEmail(email) && password) {
-			window.localStorage.setItem('login_email', email);
-			window.localStorage.setItem('login_pw', password);
+		if(util.validateEmail(email) && password) {
+			util.setEmail(email);
+			util.setPassword(password);
 			browserHistory.push('/students');
 			this.props.actions.login();
 		}
 	},
 	handleLogout(e) {
 		e.preventDefault();
-		window.localStorage.clear();
+		util.clearStorage();
 		this.props.actions.logout();
 	},
 	render() {
