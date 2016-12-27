@@ -27430,12 +27430,12 @@ var LoginForm = _react2.default.createClass({
 		e.preventDefault();
 		var email = e.target.elements[0].value;
 		var password = e.target.elements[1].value;
-		if (this.validateEmail(email)) {
+		if (this.validateEmail(email) && password) {
 			window.localStorage.setItem('login_email', email);
 			window.localStorage.setItem('login_pw', password);
 			_reactRouter.browserHistory.push('/students');
+			this.props.actions.login();
 		}
-		this.props.actions.login();
 	},
 	handleLogout: function handleLogout(e) {
 		e.preventDefault();

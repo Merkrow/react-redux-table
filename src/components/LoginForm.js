@@ -18,12 +18,12 @@ const LoginForm = React.createClass({
 		e.preventDefault();
 		const email = e.target.elements[0].value;
 		const password = e.target.elements[1].value;
-		if(this.validateEmail(email)) {
+		if(this.validateEmail(email) && password) {
 			window.localStorage.setItem('login_email', email);
 			window.localStorage.setItem('login_pw', password);
 			browserHistory.push('/students');
+			this.props.actions.login();
 		}
-		this.props.actions.login();
 	},
 	handleLogout(e) {
 		e.preventDefault();
