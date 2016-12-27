@@ -27426,6 +27426,8 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _reactRouter = require('react-router');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var LoginForm = _react2.default.createClass({
@@ -27448,6 +27450,7 @@ var LoginForm = _react2.default.createClass({
 		if (this.validateEmail(email)) {
 			window.localStorage.setItem('login_email', email);
 			window.localStorage.setItem('login_pw', password);
+			_reactRouter.browserHistory.push('/students');
 		}
 		this.props.actions.login();
 	},
@@ -27497,7 +27500,7 @@ var LoginForm = _react2.default.createClass({
 
 exports.default = LoginForm;
 
-},{"react":255,"react-dom":56}],274:[function(require,module,exports){
+},{"react":255,"react-dom":56,"react-router":224}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

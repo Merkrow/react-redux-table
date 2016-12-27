@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { browserHistory } from 'react-router';
 
 const LoginForm = React.createClass({
 	componentDidMount() {
@@ -20,6 +21,7 @@ const LoginForm = React.createClass({
 		if(this.validateEmail(email)) {
 			window.localStorage.setItem('login_email', email);
 			window.localStorage.setItem('login_pw', password);
+			browserHistory.push('/students');
 		}
 		this.props.actions.login();
 	},
