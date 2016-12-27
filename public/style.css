@@ -7,3 +7,7 @@ span {
 	width: 20%;
 	margin: 0 10px;
 }
+
+.error {
+	border-color: red;
+}

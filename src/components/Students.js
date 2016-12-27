@@ -11,6 +11,7 @@ import { browserHistory } from 'react-router';
 
 const Students = React.createClass({
 	componentWillMount() {
+		console.log(this.props.userState);
 		if(!this.props.userState) {
 			browserHistory.push('/');
 		}

@@ -31440,6 +31440,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var LoginForm = _react2.default.createClass({
 	displayName: 'LoginForm',
+	getInitialState: function getInitialState() {
+		return {
+			notValidEmail: false
+		};
+	},
 	componentDidMount: function componentDidMount() {
 		var email = _util2.default.getEmail();
 		var password = _util2.default.getPassword();
@@ -31457,6 +31462,9 @@ var LoginForm = _react2.default.createClass({
 			_reactRouter.browserHistory.push('/students');
 			this.props.actions.login();
 		}
+		this.setState({
+			notValid: true
+		});
 	},
 	handleLogout: function handleLogout(e) {
 		e.preventDefault();
@@ -31474,7 +31482,7 @@ var LoginForm = _react2.default.createClass({
 				{ className: 'login_form', onSubmit: function onSubmit(e) {
 						return _this.handleLogin(e);
 					} },
-				_react2.default.createElement('input', { type: 'text', placeholder: 'email' }),
+				_react2.default.createElement('input', { type: 'text', className: this.state.notValid ? 'error' : '', placeholder: 'email' }),
 				_react2.default.createElement('input', { type: 'password', placeholder: 'password' }),
 				_react2.default.createElement(
 					'button',
@@ -31539,6 +31547,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Students = _react2.default.createClass({
 	displayName: 'Students',
 	componentWillMount: function componentWillMount() {
+		console.log(this.props.userState);
 		if (!this.props.userState) {
 			_reactRouter.browserHistory.push('/');
 		}
@@ -32053,6 +32062,20 @@ var _students = require('../reducers/students');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var stateBefore1 = {
+	students: [{
+		name: 'Vasya',
+		department: 'Math',
+		status: 'red',
+		id: 1
+	}, {
+		name: 'Misha',
+		department: 'Phys',
+		status: 'yellow',
+		id: 2
+	}]
+};
+
 var testAddStudent = function testAddStudent() {
 	var stateBefore = { students: [] };
 	var action = {
@@ -32077,20 +32100,6 @@ var testAddStudent = function testAddStudent() {
 };
 
 var testChangeStudent = function testChangeStudent() {
-	var stateBefore = {
-		students: [{
-			name: 'Vasya',
-			department: 'Math',
-			status: 'red',
-			id: 1
-		}, {
-			name: 'Misha',
-			department: 'Phys',
-			status: 'yellow',
-			id: 2
-		}]
-	};
-
 	var action = {
 		type: 'CHANGE',
 		payload: {
@@ -32115,24 +32124,10 @@ var testChangeStudent = function testChangeStudent() {
 		}]
 	};
 
-	(0, _expect2.default)((0, _students.students)(stateBefore, action)).toEqual(stateAfter);
+	(0, _expect2.default)((0, _students.students)(stateBefore1, action)).toEqual(stateAfter);
 };
 
 var testDelete = function testDelete() {
-	var stateBefore = {
-		students: [{
-			name: 'Vasya',
-			department: 'Math',
-			status: 'red',
-			id: 1
-		}, {
-			name: 'Misha',
-			department: 'Phys',
-			status: 'yellow',
-			id: 2
-		}]
-	};
-
 	var action = {
 		type: 'DELETE',
 		id: 1
@@ -32147,7 +32142,7 @@ var testDelete = function testDelete() {
 		}]
 	};
 
-	(0, _expect2.default)((0, _students.students)(stateBefore, action)).toEqual(stateAfter);
+	(0, _expect2.default)((0, _students.students)(stateBefore1, action)).toEqual(stateAfter);
 };
 
 var run = function run() {

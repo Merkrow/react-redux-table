@@ -4,6 +4,11 @@ import { browserHistory } from 'react-router';
 import util from '../util/util';
 
 const LoginForm = React.createClass({
+	getInitialState() {
+		return {
+			notValidEmail: false
+		}
+	},
 	componentDidMount() {
 		const email = util.getEmail();
 		const password = util.getPassword();
@@ -21,6 +26,9 @@ const LoginForm = React.createClass({
 			browserHistory.push('/students');
 			this.props.actions.login();
 		}
+		this.setState({
+			notValid: true
+		})
 	},
 	handleLogout(e) {
 		e.preventDefault();
@@ -30,7 +38,7 @@ const LoginForm = React.createClass({
 	render() {
 		return ( <div>
 				{ !this.props.userState && (<form className='login_form' onSubmit={ (e) => this.handleLogin(e) }>
-					<input type='text' placeholder='email' />
+					<input type='text' className={this.state.notValid ? 'error' : ''} placeholder='email' />
 					<input type='password' placeholder='password' />
 					<button type='submit'>Login</button>
 				</form>) }
